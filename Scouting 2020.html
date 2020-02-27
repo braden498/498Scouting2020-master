@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Cc.498 Scout 2020</title>
+	<title>&#9763;498 Scout 2020</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#1d29ad"/>
 	<link href='AutoStyles.css' rel='stylesheet'>
@@ -170,11 +170,11 @@
 <!--THIS SUBMITS THE SCOUTING FORM-->
 	<script>
 	var key = 'w6ONYPfukbR7qMMVCxk64febUAcWYSj3Ugzg7aV4LsfQ6XyGDc7JgaXtHVE2p0wv'; //in the future please get your own TBA Read Key
-    var event = '2020isde2'; //you'll have to change this for hartford, onwards
+    var event = '2020isde2'; //you'll have to change this for AZ West, onwards
     var nummatches;
 	
 	$(document).ready(function() {
-		d3.dsv("\n", "WaterburyTeams.tsv").then(function(data){ //change "Waterbury" to "Hartford" for Hartford
+		d3.dsv("\n", "CASDTeams.tsv").then(function(data){ //change "CASD" to "AZPX" for AZ West
 			var options = '';
 
   			for(var i = 0; i < data.length; i++) options += '<option value="'+data[i].Teams+'" />';
