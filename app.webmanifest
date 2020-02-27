@@ -1,0 +1,32 @@
+{
+	"name": "ÜB Scout 2020",
+	"short_name": "Scout 2020",
+	"description": "Scouting for FRC team 1124",
+	"start_url": "index.html",
+	"background_color": "#333",
+	"display": "standalone",
+	"orientation": "portrait",
+	"theme_color": "#1d29ad",
+	"icons": [
+		{
+			"src": "Icons/ub48.png",
+			"type": "image/png",
+			"sizes": "48x48"
+		},
+		{
+			"src": "Icons/ub72.png",
+			"type": "image/png",
+			"sizes": "72x72"
+		},
+		{
+			"src": "Icons/ub192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "Icons/ub256.png",
+			"type": "image/png",
+			"sizes": "256x256"
+		}
+	]
+}

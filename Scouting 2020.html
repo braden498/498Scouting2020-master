@@ -1,0 +1,314 @@
+<html>
+<head>
+	<title>Cc.498 Scout 2020</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#1d29ad"/>
+	<link href='AutoStyles.css' rel='stylesheet'>
+	<link href='CounterStyles.css' rel='stylesheet'>
+	<link href='EndgameMiscStyles.css' rel='stylesheet'>
+	<link href='MatchSetupStyles.css' rel='stylesheet'>
+	<link href='PageSetupStyles.css' rel='stylesheet'>
+	<link href='TeleOpStyles.css' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Candara' rel='stylesheet'> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="Scripts.js"></script>
+	<link rel="manifest" href="./app.webmanifest"/>
+	<link rel="icon" href="Icons/ub256.png" sizes="256x256"/>
+	<link rel="icon" href="Icons/ub144.png" sizes="144x144"/>
+	<link rel="icon" href="Icons/ub72.png" sizes="72x72"/>
+	<link rel="icon" href="Icons/ub48.png" sizes="48x48"/>
+</head>
+<body>
+	<form id="scouting-form" name="scouting-form" action="Scouting Test 1.html" method="POST">
+		
+<!--MATCH SETUP-->
+		<input type="text" name="Scouter" id="Scouter" placeholder="Name"/>
+		<input type="text" name="Position" id="fieldPosition" style="display: none;"/>
+		<select name="ScouterPosition" class="preset" id="scouterPosition" onChange="scoutingPosition()">
+			<option value="R1" selected>Red 1</option>
+			<option value="R2">Red 2</option>
+			<option value="R3">Red 3</option>
+			<option value="B1">Blue 1</option>
+			<option value="B2">Blue 2</option>
+			<option value="B3">Blue 3</option>
+		</select>
+		<input type="text" name="Team" class="preset" id="Team" placeholder="Team" list="teams"><datalist id="teams">
+		</datalist></input>
+		<input type="number" name="Match" id="Match" placeholder="Match" size="5" value="1" class="preset"/>
+		<p style="display: inline-block;">Manual&nbsp;</p>
+		<label class="switch"><input type="checkbox" id="manual"> <span class="slider round" onClick="manualInput()"></span></label> 
+		<br>
+		
+<!--AUTO-->
+		<h1 style="display: inline; margin-right: 0;">Auto</h1>
+		<select name="Status" id="vroom">
+			<option value="functioning">Functional</option>
+			<option value="not functioning">Dead</option>
+			<option value="bad wires">Stuttering</option>
+			<option value="weak wires">No COMS</option>
+			<option values="no robot">Not Present</option>
+		</select>
+		<label>Exit Sector&nbsp;</label><label class="switch"><input type="checkbox" name="Exit Sector"><span class="slider round"></span></label><br>
+		
+	<!--Auto Goal Counters-->
+		<div class="goals">
+			<div class="button-group-horizontal">
+				<button type="button" class="auto lowGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+				<button type="button" class="auto lowGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="LowGoals_Auto" class="counter" id="LowGoals_Auto" placeholder="Auto Low Goals" value="0"/>
+				<p class="counterLabel">Lower</p>
+				<p class="counterDisplay" id="AutoLowCounter">0</p>
+			</div>
+			<div class="button-group-horizontal">
+				<button type="button" class="auto outGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+				<button type="button" class="auto outGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="OutGoals_Auto" class="counter" id="OutGoals_Auto" placeholder="Auto Outer Goals" value="0"/>
+				<p class="counterLabel">Outer</p>
+				<p class="counterDisplay" id="AutoOutCounter">0</p>
+			</div>
+			<div class="button-group-horizontal">
+				<button type="button" class="auto inGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+				<button type="button" class="auto inGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="InGoals_Auto" class="counter" id="InGoals_Auto" placeholder="Auto Inner Goals" value="0"/>
+				<p class="counterLabel">Inner</p>
+				<p class="counterDisplay" id="AutoInCounter">0</p>
+			</div>
+			<br>
+			<br>
+		</div>
+		<br>
+		<br style="line-height: 1em;">
+		
+<!--TELEOP-->
+		<div class="oneLine">
+		<h1 style="display: inline; float: left; margin-right: 0.15em;">TeleOp</h1>
+		<div id="cpButtonGroup">
+			<button type="button" id="rotate" onClick="rotateOn()"><strong>Rotation<br>Control</strong></button>
+			<button type="button" id="position" onClick="positionOn()"><strong>Position<br>Control</strong></button>
+		</div>
+		<button type="button" id="defended" onClick="toggleDefender()"><strong>Defended</strong></button>
+		<input type="checkbox" name="Defended" id="CDefended" style="display: none;"/>
+		</div>
+		<br>
+		<!--actual control panel inputs *shhhhhhhhh*-->
+		<div style="display: none;">
+			<input type="checkbox" name="RotationControl" id="CRotate"/><label>Rotation Control</label><br>
+			<input type="checkbox" name="PositionControl" id="CPosition"/><label>Position Control</label><br>
+		</div>
+
+	<!--Teleop Goal Counters-->
+		<div class="goals">
+			<div class="button-group-horizontal">
+			<button type="button" class="teleOp lowGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="teleOp lowGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="LowGoals_TeleOp" id="LowGoals_TeleOp" class="counter" placeholder="TeleOp Low Goals" value="0"/>
+			<p class="counterLabel">Lower</p>
+			<p class="counterDisplay" id="TeleopLowCounter">0</p>
+			</div>
+			<div class="button-group-horizontal">
+			<button type="button" class="teleOp outGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="teleOp outGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="OutGoals_TeleOp" id="OutGoals_TeleOp" class="counter" placeholder="TeleOp Outer Goals" value="0"/>
+			<p class="counterLabel">Outer</p>
+			<p class="counterDisplay" id="TeleopOutCounter">0</p>
+			</div>
+			<div class="button-group-horizontal">
+			<button type="button" class="teleOp inGoal left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="teleOp inGoal right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="InGoals_TeleOp" id="InGoals_TeleOp" class="counter" placeholder="TeleOp Inner Goals" value="0"/>
+			<p class="counterLabel">Inner</p>
+			<p class="counterDisplay" id="TeleopInCounter">0</p>
+			</div>
+		</div>
+		
+		<div class="goals">
+			<div>
+			<input type="checkbox" name="DefenseBot" id="CPlayDefense" style="display: none;"/><br>
+			</div>
+			<button type="button" id="playDefense" onClick="toggleDefense()"><strong>Plays<br>Defense</strong></button>
+			<div class="button-group-horizontal">
+			<button type="button" class="block left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="block right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="ShotsBlocked" id="ShotsBlocked" class="counter" placeholder="Goals Blocked" value="0"/>
+			<p class="counterLabel">Blocks</p>
+			<p class="counterDisplay" id="BlockCounter">0</p>
+			</div>
+<!--ENDGAME-->
+			<select name="EndgameStatus" id="endgame">
+				<option disabled selected>Endgame</option>
+				<option value="Not Parked">Not Parked</option>
+				<option value="Parked">Parked</option>
+				<option value="Hanging">Hanging</option>
+				<option value="Level">Level & Hanging</option>
+			</select>
+		</div>
+		
+
+<!--PENALTIES-->
+		<div class="goals">
+			<div class="button-group-horizontal">
+			<button type="button" class="foul left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="foul right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="Fouls" id="fouls" class="counter" placeholder="Fouls" value="0"/>
+			<p class="counterLabel">Fouls</p>
+			<p class="counterDisplay" id="FoulCounter">0</p>
+			</div>
+			<div class="button-group-horizontal">
+			<button type="button" class="techFoul left-button" onClick="countDown(this.className)">&#8678;</button>
+			<button type="button" class="techFoul right-button" onClick="countUp(this.className)">&#8680;</button><input type="number" name="TechFouls" id="techFouls" class="counter" placeholder="Tech Fouls" value="0"/>
+			<p class="counterLabel" style="width: 100%;">Tech Fouls</p>
+			<p class="counterDisplay" id="TechFoulCounter">0</p>
+			</div>
+			
+		<button type="button" id="cards" onclick="cardChange()">No Card</button>
+			<select name="Card" id="Card">
+				<option value="No Card" id="nocard">No Card</option>
+				<option value="Yellow">Yellow Card</option>
+				<option value="Red">Red Card</option>
+			</select><br>
+		</div>
+<!--MISC NOTES-->
+		<textarea name="Notes" rows="4" placeholder="Notes..."></textarea><br>
+		
+		<button type="submit" id="submit-form" class="submit-button">Submit</button>
+	</form>
+	<div id="snackbar">Submitted</div>
+	
+<!--THIS SUBMITS THE SCOUTING FORM-->
+	<script>
+	var key = 'w6ONYPfukbR7qMMVCxk64febUAcWYSj3Ugzg7aV4LsfQ6XyGDc7JgaXtHVE2p0wv'; //in the future please get your own TBA Read Key
+    var event = '2020week0'; //you'll have to change this for hartford, onwards
+    var nummatches;
+	
+	$(document).ready(function() {
+		d3.dsv("\n", "WaterburyTeams.tsv").then(function(data){ //change "Waterbury" to "Hartford" for Hartford
+			var options = '';
+
+  			for(var i = 0; i < data.length; i++) options += '<option value="'+data[i].Teams+'" />';
+
+  			document.getElementById('teams').innerHTML = options;
+		});
+		
+		var $form = $('form#scouting-form'),
+			url = 'https://script.google.com/macros/s/AKfycbzkhPbQ4TAvCpntm81qBo9ezHHxlLmV2eDq1WJPVg/exec' //you'll have to change this for hartford, onwards
+		
+        var teams = new XMLHttpRequest();
+	getData();
+    	var match = document.getElementById("Match").value;
+    	teams.open("GET", "https://www.thebluealliance.com/api/v3/match/" + event + "_qm" + match, true);
+        teams.setRequestHeader("X-TBA-Auth-Key", key);
+        teams.onreadystatechange = function(){
+			if(this.readyState === 4 && this.status === 200){
+  				var json = JSON.parse(this.responseText);
+  				var options;
+  				var matchTeams = new Array(json.alliances.red.team_keys[0],json.alliances.red.team_keys[1],json.alliances.red.team_keys[2],json.alliances.blue.team_keys[0],json.alliances.blue.team_keys[1],json.alliances.blue.team_keys[2]);
+ 				var teamPick = document.getElementById("Team");
+ 				switch (document.getElementById("scouterPosition").value) {
+ 					case "R1":
+ 						teamPick.value = removeFRC(matchTeams[0]);
+ 					break;
+ 					case "R2":
+ 						teamPick.value = removeFRC(matchTeams[1]);
+ 					break;
+ 					case "R3":
+ 						teamPick.value = removeFRC(matchTeams[2]);
+ 					break;
+ 					case "B1":
+ 						teamPick.value = removeFRC(matchTeams[3]);
+ 					break;
+ 					case "B2":
+ 						teamPick.value = removeFRC(matchTeams[4]);
+ 					break;
+ 					case "B3":
+ 						teamPick.value = removeFRC(matchTeams[5]);
+ 					break;
+ 					default: teamPick.value = "heck";
+ 				}
+ 			}
+		}
+        teams.send();
+   	 	
+		getNumMatches();
+		console.log(nummatches);
+		
+		$('#submit-form').on('click', function(e) {
+			e.preventDefault();
+			var jqxhr = $.ajax({
+				url: url,
+				method: "GET",
+				dataType: "json",
+				data: $form.serialize(),
+				success: function() {
+					submission();
+					var match = document.getElementById("Match");
+					var matchnum = match.value;
+					var scouter = document.getElementById("Scouter");
+					var scoutername = scouter.value;
+					var scoutingPosition = document.getElementById("scouterPosition");
+					var position = scoutingPosition.value;
+					var positionColor = scoutingPosition.style.backgroundColor;
+					var form = document.getElementById("scouting-form");
+					var manual = document.getElementById("manual").checked;
+					form.reset();
+					resetEverything();
+					document.getElementById("manual").checked = manual;
+					var card = document.getElementById("cards");
+					card.innerHTML = "No Card";
+					if (matchnum < nummatches) {
+						matchnum++;
+						match.value = matchnum;
+						scouter.value = scoutername;
+						scoutingPosition.value = position;
+						scoutingPosition.style.backgroundColor = positionColor;
+						getTeam();
+					}
+					else {
+						alert("You're done!");
+						window.close();
+					}
+				}
+			});
+		});
+	});
+	
+	function removeFRC(team) {
+   	 		return team.substring(3,team.length);
+   	}
+	</script>
+	
+<!--this part is to mark you as done scouting when you close the page-->
+	<form id="logout">
+		<input type="text" name="Name" id="Name" style="display: none;"/>
+		<input type="text" name="Position" id="Position" style="display: none;"/>
+		<input type="text" name="On/Off" id="on-off" value="Off" style="display: none;"/>
+	</form>
+	<script>
+	$(window).on("beforeunload", function(e) {
+   		logOut();
+	});
+		
+	document.addEventListener("visibilitychange", function() {
+		if(document.visibilityState == "hidden") logOut();
+		else if(document.visibilityState == "visible") window.open("index.html", "_self");
+	}, false);
+		
+	function logOut() {
+		var  $form = $('form#logout'),
+   			url = "https://script.google.com/macros/s/AKfycbxovMi5ZvmGFnu3Ka4ZBDoJw_xvoVIgLKHFQ1dx/exec" //you'll have to change this for hartford, onwards
+   			
+   		$.ajax({
+     		type: 'GET',
+			dataType: 'json',
+			data: $form.serialize(),
+     		async: false,
+     		url: url
+   		});
+	}
+	</script>
+	<!-- register service worker -->
+        <script>
+          if ('serviceWorker' in navigator)
+          {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js')
+            .then(function() { console.log("Service Worker Registered, Cheers to PWA Fire!"); });
+          }
+          );
+        }
+        </script>
+ 	<!-- end of service worker -->
+</body>
+</html>
