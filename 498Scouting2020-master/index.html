@@ -37,7 +37,7 @@
 	</div>
 <script>
 	window.onload = function () {
-		const dataURL = 'https://spreadsheets.google.com/feeds/cells/1WrYdjXfmYBAxbbJaTaVUPDx6lfOX62PoOhDvC2GvuA8/5/public/full?alt=json'; //you'll have to change this for hartford, onwards
+		const dataURL = 'https://spreadsheets.google.com/feeds/cells/1dyX9xC2wzOrdsi8WIOVgTWwnuYGrLFWuSSh-0Qioip4/3/public/full?alt=json'; //you'll have to change this for hartford, onwards
 		$.getJSON(dataURL, function(data) {
 			console.log(data.feed.entry);
 			console.log((data.feed.entry[2].content.$t)+" "+(data.feed.entry[3].content.$t));
@@ -91,7 +91,7 @@
 	
 	$(document).ready(function() {
 		var $form = $('form#setup'),
-			url = 'https://script.google.com/macros/s/AKfycbx_crdTsOe1Cxlg3G9xH4Re0KGqzvY2AczRBDTOVQrj_k6giD5r/exec' //you'll have to change this for hartford, onwards
+			url = 'https://script.google.com/macros/s/AKfycbxovMi5ZvmGFnu3Ka4ZBDoJw_xvoVIgLKHFQ1dx/exec' //you'll have to change this for hartford, onwards
 		
 		$('#start').on('click', function(e) {
 			e.preventDefault();
