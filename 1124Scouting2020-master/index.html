@@ -1,0 +1,139 @@
+<html>
+<head>
+	<title>Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#1d29ad"/>
+	<link href='LoginStyles.css' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Candara' rel='stylesheet'>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<link rel="manifest" href="./app.webmanifest"/>
+	<link rel="icon" href="Icons/ub256.png" sizes="256x256"/>
+	<link rel="icon" href="Icons/ub144.png" sizes="144x144"/>
+	<link rel="icon" href="Icons/ub72.png" sizes="72x72"/>
+	<link rel="icon" href="Icons/ub48.png" sizes="48x48"/>
+	<!-- register service worker -->
+    <script>
+    if ('serviceWorker' in navigator) 
+        {
+          window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker.js')
+          .then(() => { console.log("[ PWA Fire Bundle ] Service Worker Registered"); });
+        } ); 
+      }  
+    </script>
+</head>
+<body>
+	<div class="wrapper">
+		<h1>Scouting 2020</h1>
+		<div class="buttonGroup">
+		<form id="setup" method="GET" action="Scouting 2020.html">
+		<input type="text" id="scouter" name="Name" size="10" placeholder="Name"/>
+		<input type="number" id="match" name="Match" placeholder="Match"/>
+		<input type="text" id="position" name="Position" style="display: none;"/>
+		<input type="text" name="On/Off" value="On" style="display: none;"/>
+		<button type="submit" id="start">&#8680;</button>
+		</form>
+		</div>
+	</div>
+<script>
+	window.onload = function () {
+		const dataURL = 'https://spreadsheets.google.com/feeds/cells/1WrYdjXfmYBAxbbJaTaVUPDx6lfOX62PoOhDvC2GvuA8/5/public/full?alt=json'; //you'll have to change this for hartford, onwards
+		$.getJSON(dataURL, function(data) {
+			console.log(data.feed.entry);
+			console.log((data.feed.entry[2].content.$t)+" "+(data.feed.entry[3].content.$t));
+			console.log((data.feed.entry[4].content.$t)+" "+(data.feed.entry[5].content.$t));
+			console.log((data.feed.entry[6].content.$t)+" "+(data.feed.entry[7].content.$t));
+			console.log((data.feed.entry[8].content.$t)+" "+(data.feed.entry[9].content.$t));
+			console.log((data.feed.entry[10].content.$t)+" "+(data.feed.entry[11].content.$t));
+			console.log((data.feed.entry[12].content.$t)+" "+(data.feed.entry[13].content.$t));
+			
+			var assignment = document.getElementById("position");
+			var rolled = [false, false, false, false, false, false];
+			while(assignment.value.length == 0) {
+				var assignmentNumber = Math.floor(Math.random()*6);
+				console.log(assignmentNumber);
+				if(rolled[0] && rolled[1] && rolled[2] && rolled[3] && rolled[4] && rolled[5]) {
+					alert("Scouting is full");
+					var submitButton = document.getElementById("submit").disabled = true;
+					break;
+				}
+				switch(assignmentNumber) {
+					case 0:
+					if ((data.feed.entry[3].content.$t) == "No Scouter") assignment.value = "Red 1";
+					rolled[0] = true;
+					break;
+					case 1:
+					if ((data.feed.entry[5].content.$t) == "No Scouter") assignment.value = "Red 2";
+					rolled[1] = true;
+					break;
+					case 2:
+					if ((data.feed.entry[7].content.$t) == "No Scouter") assignment.value = "Red 3";
+					rolled[2] = true;
+					break;
+					case 3:
+					if ((data.feed.entry[9].content.$t) == "No Scouter") assignment.value = "Blue 1";
+					rolled[3] = true;
+					break;
+					case 4:
+					if ((data.feed.entry[11].content.$t) == "No Scouter") assignment.value = "Blue 2";
+					rolled[4] = true;
+					break;
+					case 5:
+					if ((data.feed.entry[13].content.$t) == "No Scouter") assignment.value = "Blue 3";
+					rolled[5] = true;
+					break;
+					default:
+					alert("heck");
+				}
+			}
+		});
+	}
+	
+	$(document).ready(function() {
+		var $form = $('form#setup'),
+			url = 'https://script.google.com/macros/s/AKfycbx_crdTsOe1Cxlg3G9xH4Re0KGqzvY2AczRBDTOVQrj_k6giD5r/exec' //you'll have to change this for hartford, onwards
+		
+		$('#start').on('click', function(e) {
+			e.preventDefault();
+			var jqxhr = $.ajax({
+				url: url,
+				method: "GET",
+				dataType: "json",
+				data: $form.serialize(),
+				success: function() {
+					console.log("Success!");
+					$('form#setup').submit();
+				},
+				error: function() {
+					console.log("Error");
+				}
+			});
+		
+		});
+	});
+</script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDE-DM1O2CnFI8mbVCkBVviIo4JiZsd340",
+    authDomain: "scouting-2020-1581b.firebaseapp.com",
+    databaseURL: "https://scouting-2020-1581b.firebaseio.com",
+    projectId: "scouting-2020-1581b",
+    storageBucket: "scouting-2020-1581b.appspot.com",
+    messagingSenderId: "385570783578",
+    appId: "1:385570783578:web:2483da171ded1041f8f363",
+    measurementId: "G-0CJY167BL2"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+</body>
+</html>
